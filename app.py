@@ -1,4 +1,5 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, url_for, redirect
+from regex import F
 import requests
 import json
 import python_weather
@@ -6,33 +7,41 @@ import python_weather
 # average pace, weekly miles ran, sprint times
 # most frequented running routes
 # local weather information to the user based on a zip code
-# breakdown of activity types 
+# breakdown of activity types
 
 app = Flask(__name__)
 
 # 61154779 ashank athlete id
 
-@app.route('/')
+
+@app.route('/', methods=['GET', 'POST'])
 async def home():
+    # zip_code_given = False
     # with open('api.json', 'a') as f:
     #     f.write(json.dumps(r))
     # declare the client. format defaults to metric system (celcius, km/h, etc.)
-    client = python_weather.Client(format=python_weather.IMPERIAL)
 
-    # fetch a weather forecast from a city
-    weather = await client.find("61820")
+    if request.method == 'POST':
+        zip = request.form['zip']
+        client = python_weather.Client(format=python_weather.IMPERIAL)
 
-    # returns the current day's forecast temperature (int)
-    print(weather.current.temperature)
+        # fetch a weather forecast from a city
+        weather = await client.find(str(zip))
 
-    # get the weather forecast for a few days
-    for forecast in weather.forecasts:
-        print(str(forecast.date), forecast.sky_text, forecast.temperature)
+        forecasts = []
+        for f in weather.forecasts[2:]:
+            dic = {}
+            dic['date'] = f.date.strftime("%B %d, %Y")
+            dic['sky_text'] = f.sky_text
+            dic['temperature'] = f.temperature
 
-    # close the wrapper once done
-    await client.close()
+            forecasts.append(dic)
 
-    return render_template('layout.html')
+        await client.close()
+
+        return render_template('general.html', need_input=False, current_temp=weather.current.temperature, forecasts=forecasts)
+    else:
+        return render_template('general.html', need_input=True)
 
 
 if __name__ == '__main__':
