@@ -1,66 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta charset="utf-8">
 
-        <title>{{ title }}</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
 
-        <style type="text/css">
-            h1 {
-                color:green;
-            }
-            .xyz {
-                background-size: auto;
-                text-align: center;
-                padding-top: 100px;
-            }
-            .btn-circle.btn-sm {
-                width: 30px;
-                height: 30px;
-                padding: 6px 0px;
-                border-radius: 15px;
-                font-size: 8px;
-                text-align: center;
-            }
-            .btn-circle.btn-md {
-                width: 50px;
-                height: 50px;
-                padding: 7px 10px;
-                border-radius: 25px;
-                font-size: 10px;
-                text-align: center;
-            }
-            .btn-circle.btn-xl {
-                width: 70px;
-                height: 70px;
-                padding: 10px 16px;
-                border-radius: 35px;
-                font-size: 12px;
-                text-align: center;
-            }
-        </style>
+    <title>{{ title }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
-    </head>
-    <body data-spy="scroll">
-        
-        <div class="card">
-            <div class="card-header">
-              Featured
+    <style type="text/css">
+        h1 {
+            color: green;
+        }
+
+        .xyz {
+            background-size: auto;
+            text-align: center;
+            padding-top: 100px;
+        }
+
+        .btn-circle.btn-sm {
+            width: 30px;
+            height: 30px;
+            padding: 6px 0px;
+            border-radius: 15px;
+            font-size: 8px;
+            text-align: center;
+        }
+
+        .btn-circle.btn-md {
+            width: 50px;
+            height: 50px;
+            padding: 7px 10px;
+            border-radius: 25px;
+            font-size: 10px;
+            text-align: center;
+        }
+
+        .btn-circle.btn-xl {
+            width: 70px;
+            height: 70px;
+            padding: 10px 16px;
+            border-radius: 35px;
+            font-size: 12px;
+            text-align: center;
+        }
+    </style>
+
+</head>
+
+<body data-spy="scroll">
+
+    <div class="card">
+        <div class="card-header">
+            Weather Information
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Input your zipcode to see a weather forecast</h5>
+            <!-- <p class="card-text">With supporting text below as a natural lead-in to additional content.</p> -->
+            <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+            <!-- <button type="button" class="btn btn-primary btn-circle btn-sm">Blue</button> -->
+            <script>
+                function shouldAddNum(num) {
+                    if (document.getElementById('code').value.length < 5) {
+                        document.getElementById('code').value = document.getElementById('code').value + num
+                    }
+                }
+            </script>
+            <div class="btn-group-vertical ml-4 mt-4" role="group" aria-label="Basic example">
+                <div class="btn-group">
+                    <input class="text-center form-control-lg mb-2" id="code" maxlength="5">
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-outline-secondary py-3" onclick="shouldAddNum('1');">1</button>
+                    <button type="button" class="btn btn-outline-secondary py-3" onclick="shouldAddNum('2');">2</button>
+                    <button type="button" class="btn btn-outline-secondary py-3" onclick="shouldAddNum('3');">3</button>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-outline-secondary py-3" onclick="shouldAddNum('4');">4</button>
+                    <button type="button" class="btn btn-outline-secondary py-3" onclick="shouldAddNum('5');">5</button>
+                    <button type="button" class="btn btn-outline-secondary py-3" onclick="shouldAddNum('6');">6</button>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-outline-secondary py-3" onclick="shouldAddNum('7');">7</button>
+                    <button type="button" class="btn btn-outline-secondary py-3" onclick="shouldAddNum('8');">8</button>
+                    <button type="button" class="btn btn-outline-secondary py-3" onclick="shouldAddNum('9');">9</button>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-outline-secondary py-3"
+                        onclick="document.getElementById('code').value=document.getElementById('code').value.slice(0, -1);">&lt;</button>
+                    <button type="button" class="btn btn-outline-secondary py-3" onclick="shouldAddNum('0');">0</button>
+                    <button type="button" class="btn btn-primary py-3" onclick="">Go</button>
+                </div>
             </div>
-            <div class="card-body">
-              <h5 class="card-title">Special title treatment</h5>
-              <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-              <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
-              <button type="button" class="btn btn-primary btn-circle btn-sm">Blue</button>
-            </div>
-          </div>
-        
+        </div>
+    </div>
 
-        {% block content %}{% endblock content %}
-        <!-- bootstrap js -->
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    </body>
+
+
+    {% block content %}{% endblock content %}
+    <!-- bootstrap js -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+</body>
+
 </html>
