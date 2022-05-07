@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, url_for, redirect
-from regex import F
 import requests
 import json
 import python_weather
