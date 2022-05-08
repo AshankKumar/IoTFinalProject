@@ -136,7 +136,18 @@
         Weekly Running Goal
     </div>
     <div class="card-body">
-        <h5 class="card-title">{{ miles }}</h5>
+        <h5 class="card-title">Your weekly goal is: {{ miles }} miles</h5>
+        {% if met_goal %}
+        <h6 style="color:Green;">Awesome, you've reached your goal. You have reached {{total_distance}} miles</h6>
+        {% else %}
+        <h6 style="color:Tomato;">Bad job! You need to get yourself moving! You have {{ (miles | float) - total_distance }} miles to reach your goal</h6>
+        {% endif %}
+        <style>
+            .btn-primary.custom-btn {
+                background-color:forestgreen;
+            }
+        </style>
+        <a href="{{ url_for('goal') }}" class="btn btn-primary custom-btn">Edit Goal</a>
     </div>
 </div>
 

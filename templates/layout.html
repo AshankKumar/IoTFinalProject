@@ -63,6 +63,17 @@
     {% else %}
     {% block goal %}{% endblock %}
     {% endif %}
+    
+    <div class="card">
+        <div class="card-header">
+            Strava Activity Breakdown
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Here's a breakdown of the different activities you recorded in Strava!</h5>
+            <img src="{{ url_for('static', filename='plot.png') }}"">
+        </div>
+    </div>
+
     <!-- bootstrap js -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
