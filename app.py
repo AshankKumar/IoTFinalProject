@@ -165,7 +165,8 @@ def set_polyline():
     r = requests.get(url, headers=headers)
     r = r.json()
     global polylines
-    for i in range(2, len(r)):
+    print(len(r))
+    for i in range(4, len(r)):
         polylines = r[i]['map']['summary_polyline']
         break
 
