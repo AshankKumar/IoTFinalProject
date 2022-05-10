@@ -18,6 +18,8 @@ plt.gcf().subplots_adjust(bottom=0.2)
 zip_code = None
 mile_goal = None
 total_distance = 0
+polylines = 0
+
 
 app = Flask(__name__)
 
@@ -50,15 +52,15 @@ async def home():
         await client.close()
 
         if mile_goal is not None:
-            return render_template('general.html', need_input=False, current_temp=weather.current.temperature, forecasts=forecasts, need_miles=False, miles=mile_goal,  met_goal=total_distance >= float(mile_goal), total_distance=total_distance)
+            return render_template('general.html', need_input=False, current_temp=weather.current.temperature, forecasts=forecasts, need_miles=False, miles=mile_goal,  met_goal=total_distance >= float(mile_goal), total_distance=total_distance, polyline=polylines)
         else:
-            return render_template('general.html', need_input=False, current_temp=weather.current.temperature, forecasts=forecasts, need_miles=True)
+            return render_template('general.html', need_input=False, current_temp=weather.current.temperature, forecasts=forecasts, need_miles=True, polyline=polylines)
     else:
         zip_code = None
         if mile_goal is not None:
-            return render_template('general.html', need_input=True, need_miles=False, miles=mile_goal,  met_goal=total_distance >= float(mile_goal), total_distance=total_distance)
+            return render_template('general.html', need_input=True, need_miles=False, miles=mile_goal,  met_goal=total_distance >= float(mile_goal), total_distance=total_distance, polyline=polylines)
         else:
-            return render_template('general.html', need_input=True, need_miles=True)
+            return render_template('general.html', need_input=True, need_miles=True, polyline=polylines)
 
 
 @app.route('/goal', methods=['GET', 'POST'])
@@ -87,9 +89,9 @@ async def goal():
 
             await client.close()
 
-            return render_template('general.html', need_input=False, current_temp=weather.current.temperature, forecasts=forecasts, miles=miles, need_miles=False, met_goal=total_distance >= float(miles), total_distance=total_distance)
+            return render_template('general.html', need_input=False, current_temp=weather.current.temperature, forecasts=forecasts, miles=miles, need_miles=False, met_goal=total_distance >= float(miles), total_distance=total_distance, polyline=polylines)
         else:
-            return render_template('general.html', need_input=True, miles=miles, need_miles=False,  met_goal=total_distance >= float(miles), total_distance=total_distance)
+            return render_template('general.html', need_input=True, miles=miles, need_miles=False,  met_goal=total_distance >= float(miles), total_distance=total_distance, polyline=polylines)
     else:
         mile_goal = None
         if zip_code is not None:
@@ -109,9 +111,9 @@ async def goal():
 
             await client.close()
 
-            return render_template('general.html', need_input=False, current_temp=weather.current.temperature, forecasts=forecasts, need_miles=True)
+            return render_template('general.html', need_input=False, current_temp=weather.current.temperature, forecasts=forecasts, need_miles=True, polyline=polylines)
         else:
-            return render_template('general.html', need_input=True, need_miles=True)
+            return render_template('general.html', need_input=True, need_miles=True, polyline=polylines)
 
 def get_df():
     col_names = ['id','type']
@@ -123,7 +125,7 @@ def get_df():
     total_distance = 0
     while True:
         url = 'https://www.strava.com/api/v3/athlete/activities'
-        headers = {'Authorization': 'Bearer be3a2cd478c838388bc13ea45cfa92e1e16b4f52'}
+        headers = {'Authorization': 'Bearer 1891167db71be155c9baeac38e36e9b2a77f4e29'}
         params = {'page': page, 'after': after}
 
         r = requests.get(url, headers=headers, params=params)
@@ -152,20 +154,23 @@ def get_seven_days_date():
 
     return date.timestamp()
 
-
-@app.route('/route')
-def route():
+def set_polyline():
     url = 'https://www.strava.com/api/v3/athlete/activities'
-    headers = {'Authorization': 'Bearer be3a2cd478c838388bc13ea45cfa92e1e16b4f52'}
+    headers = {'Authorization': 'Bearer 1891167db71be155c9baeac38e36e9b2a77f4e29'}
 
     r = requests.get(url, headers=headers)
     r = r.json()
-    polylines = 0
+    global polylines
     for i in range(2, len(r)):
         polylines = r[i]['map']['summary_polyline']
         break
-    print(polylines)
-    return 'hello'
+
+
+@app.route('/route')
+def route():
+    
+    
+    return render_template('general.html', polyline=polylines)
 
 
 
@@ -173,4 +178,5 @@ def route():
 if __name__ == '__main__':
     print(get_seven_days_date())
     activity_graph()
+    set_polyline()
     app.run(debug=True, port='8888')
