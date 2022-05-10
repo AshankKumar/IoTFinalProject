@@ -153,6 +153,22 @@ def get_seven_days_date():
     return date.timestamp()
 
 
+@app.route('/route')
+def route():
+    url = 'https://www.strava.com/api/v3/athlete/activities'
+    headers = {'Authorization': 'Bearer be3a2cd478c838388bc13ea45cfa92e1e16b4f52'}
+
+    r = requests.get(url, headers=headers)
+    r = r.json()
+    polylines = 0
+    for i in range(2, len(r)):
+        polylines = r[i]['map']['summary_polyline']
+        break
+    print(polylines)
+    return 'hello'
+
+
+
 
 if __name__ == '__main__':
     print(get_seven_days_date())
