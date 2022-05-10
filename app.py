@@ -115,8 +115,9 @@ async def goal():
         else:
             return render_template('general.html', need_input=True, need_miles=True, polyline=polylines)
 
+
 def get_df():
-    col_names = ['id','type']
+    col_names = ['id', 'type']
     activities = pd.DataFrame(columns=col_names)
     page = 1
 
@@ -135,16 +136,18 @@ def get_df():
             break
 
         for x in range(len(r)):
-            activities.loc[x + (page-1)*30,'id'] = r[x]['id']
-            activities.loc[x + (page-1)*30,'type'] = r[x]['type']
+            activities.loc[x + (page-1)*30, 'id'] = r[x]['id']
+            activities.loc[x + (page-1)*30, 'type'] = r[x]['type']
             total_distance += r[x]['distance']
         page += 1
     total_distance /= 1609
     return activities
 
+
 def activity_graph():
     df = get_df()
     x = df['type'].value_counts().plot(kind='bar', color=['blue', 'red', 'orange', 'green', 'purple', 'yellow'])
+    plt.xticks(rotation=0)
 
     plt.savefig('static/plot.png')
 
@@ -153,6 +156,7 @@ def get_seven_days_date():
     date = datetime.today() - timedelta(days=7)
 
     return date.timestamp()
+
 
 def set_polyline():
     url = 'https://www.strava.com/api/v3/athlete/activities'
@@ -168,11 +172,8 @@ def set_polyline():
 
 @app.route('/route')
 def route():
-    
-    
+
     return render_template('general.html', polyline=polylines)
-
-
 
 
 if __name__ == '__main__':
